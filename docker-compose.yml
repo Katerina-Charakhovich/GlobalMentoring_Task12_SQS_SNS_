@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  order-service:
+    container_name: "order-service"
+    hostname: orderservice
+    image:  order-service:1.0.6
+    depends_on:
+      - order-service-db
+    ports:
+      - "8022:8022"
+    env_file:
+      - "order-service/order.service.env"
+
+  order-processor:
+    hostname: orderprocessor
+    container_name: "order-processor"
+    image:  order-processor:1.0.3
+    ports:
+      - "8023:8023"
+    env_file:
+      - "orders-processor/order.processor.env"
+
+
+  log-service:
+    hostname: logservice
+    container_name: "log-service"
+    image: log-service:1.0.3
+    ports:
+      - "8021:8021"
+    env_file:
+      - "log-service/log.service.env"
+
+  order-service-db:
+    hostname: orderservicedb
+    container_name: "order-service-db"
+    image: charakhovich/charakhovich/order-service-db:1.0.1
+    ports:
+      - "5406:3306"
